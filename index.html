@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#ffffff">
+  <title>bamdi world</title>
+  <meta name="description" content="bamdi의 작은 세계">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gaegu&family=Gowun+Dodum&display=swap">
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #4a4341;
+      --ink-soft: #8a807c;
+      --pink: #f7bfd4;
+      --blue: #bcd4f6;
+      --yellow: #fde49a;
+      --green: #c9e8b9;
+      --lavender: #dccdf3;
+      --peach: #fbd3b8;
+      --header-h: 3.5rem;
+      --vh: 100vh;
+      --hand: "Gaegu", "Chalkboard SE", "Comic Sans MS", cursive;
+      --text: "Gowun Dodum", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      --pencil-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g' x='0' y='0' width='1' height='1'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 3.2 -.75'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+    }
+
+    @supports (height: 100svh) {
+      :root { --vh: 100svh; }
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: var(--header-h);
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+    }
+
+    body {
+      margin: 0;
+      background: #fff;
+      color: var(--ink);
+      font-family: var(--text);
+      font-size: 1rem;
+      line-height: 1.9;
+      word-break: keep-all;
+      overflow-wrap: break-word;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    img { max-width: 100%; }
+    ::selection { background: var(--yellow); }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      height: var(--header-h);
+      padding-inline: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+    }
+    .site-header::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 100%;
+      height: .9rem;
+      background: linear-gradient(#fff, rgb(255 255 255 / 0));
+      pointer-events: none;
+    }
+
+    .menu {
+      display: flex;
+      gap: clamp(1.1rem, 4.5vw, 2.6rem);
+      white-space: nowrap;
+    }
+    .menu a {
+      position: relative;
+      isolation: isolate;
+      padding: .3rem .1rem;
+      font-family: var(--hand);
+      font-size: clamp(1.05rem, 1rem + .3vw, 1.2rem);
+      line-height: 1;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .menu a::before,
+    .title::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      left: -.3em;
+      right: -.3em;
+      border-radius: 1em .7em 1em .8em;
+      background: var(--c);
+      -webkit-mask: var(--pencil-grain);
+      mask: var(--pencil-grain);
+    }
+    .menu a::before {
+      bottom: .3em;
+      height: .55em;
+      transform: scaleX(0) rotate(-2deg);
+      transform-origin: left center;
+      transition: transform .3s ease;
+    }
+    .menu a:hover::before,
+    .menu a:focus-visible::before {
+      transform: scaleX(1) rotate(-2deg);
+    }
+    .menu a:focus-visible,
+    .mail:focus-visible {
+      outline: 2px dashed var(--ink-soft);
+      outline-offset: 4px;
+      border-radius: 4px;
+    }
+
+    [href="#home"] { --c: var(--pink); }
+    [href="#about"], #about { --c: var(--blue); }
+    [href="#works"], #works { --c: var(--yellow); }
+    [href="#diary"], #diary { --c: var(--green); }
+    [href="#contact"], #contact { --c: var(--lavender); }
+
+    .hero {
+      position: relative;
+      height: calc(var(--vh) - var(--header-h));
+      overflow: hidden;
+    }
+    .hero h1 { margin: 0; }
+    .hero img {
+      --gap-x: clamp(1rem, 3vw, 3rem);
+      --gap-y: 1.5rem;
+      --fit: min(100% - 2rem, 1200px, (var(--vh) - var(--header-h) - 3.5rem) * 1.4147);
+      /* 1.044·1.925와 translate 값은 투명 여백을 뺀 '그려진 부분'(원본 기준 x 44~2325, y 324~1561px)에 맞춘 것 */
+      --fill: min((100% - 2 * var(--gap-x)) * 1.044, (var(--vh) - var(--header-h) - 2 * var(--gap-y)) * 1.925);
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      max-width: none;
+      /* 그림 전체가 들어가는 크기(--fit)와 그려진 부분이 꽉 차는 크기(--fill)의 딱 중간 */
+      width: calc((var(--fit) + var(--fill)) / 2);
+      height: auto;
+      transform: translate(-49.7%, -56%);
+    }
+
+    .section {
+      max-width: 42rem;
+      margin-inline: auto;
+      padding: clamp(3.5rem, 9vw, 5.5rem) 1rem;
+      text-align: center;
+    }
+    .section:last-child {
+      min-height: calc(var(--vh) - var(--header-h));
+    }
+    .section p {
+      margin: 0 0 .6rem;
+      text-wrap: balance;
+    }
+
+    .title {
+      position: relative;
+      isolation: isolate;
+      display: inline-block;
+      margin: 0 0 1rem;
+      font-family: var(--hand);
+      font-size: clamp(1.3rem, 1.2rem + .4vw, 1.45rem);
+      font-weight: 400;
+      line-height: 1.2;
+    }
+    .title::before {
+      left: .1em;
+      right: .1em;
+      bottom: -.08em;
+      height: .18em;
+      border-radius: 1em;
+      transform: rotate(-1deg);
+    }
+
+    .works {
+      list-style: none;
+      margin: 2.4rem 0 0;
+      padding: 0;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem 1.5rem;
+    }
+    .works li {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      line-height: 1.6;
+    }
+    .works li::before {
+      content: "";
+      width: 3.4rem;
+      height: 3.4rem;
+      margin-bottom: .9rem;
+      border-radius: 52% 48% 55% 45% / 47% 55% 45% 53%;
+      background: var(--dot);
+      -webkit-mask: var(--pencil-grain);
+      mask: var(--pencil-grain);
+    }
+    .works li:nth-child(3n+1) { --dot: var(--pink); }
+    .works li:nth-child(3n+2) { --dot: var(--blue); }
+    .works li:nth-child(3n) { --dot: var(--peach); }
+    .works b {
+      font-family: var(--hand);
+      font-size: 1.2rem;
+      font-weight: 400;
+    }
+    .works span {
+      color: var(--ink-soft);
+      font-size: .95rem;
+    }
+
+    .diary {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .diary li + li { margin-top: 1.8rem; }
+    .diary time {
+      display: block;
+      font-family: var(--hand);
+      font-size: 1.2rem;
+      color: var(--ink-soft);
+    }
+
+    .mail {
+      font-family: var(--hand);
+      font-size: 1.2rem;
+      color: var(--ink);
+      text-decoration-line: underline;
+      text-decoration-style: wavy;
+      text-decoration-color: var(--c);
+      text-decoration-thickness: 2px;
+      text-underline-offset: .3em;
+    }
+
+    @media (max-width: 36rem) {
+      .works { grid-template-columns: 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .menu a::before { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <nav class="menu" aria-label="메뉴">
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#works">Works</a>
+      <a href="#diary">Diary</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="home" class="hero">
+      <h1>
+        <img src="images/bamdi-world.png" width="2381" height="1683" fetchpriority="high" alt="bamdi world">
+      </h1>
+    </section>
+
+    <section id="about" class="section">
+      <h2 class="title">About</h2>
+      <p>안녕하세요, bamdi예요!</p>
+      <p>색연필로 작고 귀여운 것들을 그리는 걸 좋아해요. 이곳은 제 그림과 하루를 모아두는 작은 세계예요.</p>
+    </section>
+
+    <section id="works" class="section">
+      <h2 class="title">Works</h2>
+      <p>그동안 그린 그림들을 하나씩 모아둘 예정이에요.</p>
+      <ul class="works">
+        <li><b>별 친구들</b><span>고깔모자를 쓴 별 두 개</span></li>
+        <li><b>과일 가게</b><span>볼이 발그레한 귤과 토마토</span></li>
+        <li><b>달콤한 편지</b><span>하트 편지와 케이크 한 조각</span></li>
+      </ul>
+    </section>
+
+    <section id="diary" class="section">
+      <h2 class="title">Diary</h2>
+      <ul class="diary">
+        <li>
+          <time datetime="2026-11-13">2026.11.13</time>
+          <p>홈페이지를 처음 열었어요. 앞으로 여기에 작은 일기를 남겨볼게요.</p>
+        </li>
+        <li>
+          <time datetime="2026-11-12">2026.11.12</time>
+          <p>새 색연필을 깎았어요. 오늘은 분홍색이 제일 마음에 들었어요.</p>
+        </li>
+      </ul>
+    </section>
+
+    <section id="contact" class="section">
+      <h2 class="title">Contact</h2>
+      <p>하고 싶은 이야기가 있다면 편하게 편지 보내주세요.</p>
+      <p><a class="mail" href="mailto:hello@example.com">hello@example.com</a></p>
+    </section>
+  </main>
+</body>
+</html>
