@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,12 +9,13 @@
   <meta name="description" content="bamdi의 작은 세계">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gaegu&family=Gowun+Dodum&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gaegu&display=swap">
+  <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
   <style>
     :root {
       color-scheme: light;
       --ink: #4a4341;
-      --ink-soft: #8a807c;
+      --ink-soft: #7a716d;
       --pink: #f7bfd4;
       --blue: #bcd4f6;
       --yellow: #fde49a;
@@ -22,9 +23,11 @@
       --lavender: #dccdf3;
       --peach: #fbd3b8;
       --header-h: 3.5rem;
+      --lang-h: 1.9rem;
+      --menu-font: clamp(.8rem, (100vw - 2.5rem) / 23.4, 1.2rem);
       --vh: 100vh;
       --hand: "Gaegu", "Chalkboard SE", "Comic Sans MS", cursive;
-      --text: "Gowun Dodum", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+      --text: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
       --pencil-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g' x='0' y='0' width='1' height='1'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 3.2 -.75'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
     }
 
@@ -47,6 +50,7 @@
       color: var(--ink);
       font-family: var(--text);
       font-size: 1rem;
+      font-weight: 350;
       line-height: 1.9;
       word-break: keep-all;
       overflow-wrap: break-word;
@@ -55,6 +59,57 @@
 
     img { max-width: 100%; }
     ::selection { background: var(--yellow); }
+
+    html[lang="en"] body [lang="ko"],
+    html[lang="ko"] body [lang="en"] { display: none; }
+
+    .lang-switch {
+      height: var(--lang-h);
+      padding-inline: 1.25rem;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: .25rem;
+      font-family: var(--hand);
+      font-size: min(1rem, var(--menu-font));
+      line-height: 1;
+      color: var(--ink-soft);
+    }
+    .lang-switch button {
+      position: relative;
+      isolation: isolate;
+      padding: .2rem .15rem;
+      border: 0;
+      background: none;
+      font: inherit;
+      color: inherit;
+      cursor: pointer;
+    }
+    .lang-switch button:hover,
+    html[lang="en"] [data-set-lang="en"],
+    html[lang="ko"] [data-set-lang="ko"] {
+      color: var(--ink);
+    }
+    .lang-switch button::before {
+      content: "";
+      position: absolute;
+      z-index: -1;
+      left: .1em;
+      right: .1em;
+      bottom: .1em;
+      height: .22em;
+      border-radius: 1em;
+      background: var(--pink);
+      -webkit-mask: var(--pencil-grain);
+      mask: var(--pencil-grain);
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform .3s ease;
+    }
+    html[lang="en"] [data-set-lang="en"]::before,
+    html[lang="ko"] [data-set-lang="ko"]::before {
+      transform: scaleX(1);
+    }
 
     .site-header {
       position: sticky;
@@ -80,15 +135,17 @@
 
     .menu {
       display: flex;
-      gap: clamp(1.1rem, 4.5vw, 2.6rem);
+      justify-content: center;
+      gap: clamp(.7em, 6.47vw - 1.14rem, 2.6rem);
+      max-width: 100%;
+      font-family: var(--hand);
+      font-size: var(--menu-font);
       white-space: nowrap;
     }
     .menu a {
       position: relative;
       isolation: isolate;
       padding: .3rem .1rem;
-      font-family: var(--hand);
-      font-size: clamp(1.05rem, 1rem + .3vw, 1.2rem);
       line-height: 1;
       color: var(--ink);
       text-decoration: none;
@@ -118,6 +175,8 @@
       transform: scaleX(1) rotate(-2deg);
     }
     .menu a:focus-visible,
+    .lang-switch button:focus-visible,
+    .links a:focus-visible,
     .mail:focus-visible {
       outline: 2px dashed var(--ink-soft);
       outline-offset: 4px;
@@ -126,22 +185,30 @@
 
     [href="#home"] { --c: var(--pink); }
     [href="#about"], #about { --c: var(--blue); }
-    [href="#works"], #works { --c: var(--yellow); }
-    [href="#diary"], #diary { --c: var(--green); }
-    [href="#contact"], #contact { --c: var(--lavender); }
+    [href="#projects"], #projects { --c: var(--yellow); }
+    [href="#favorites"], #favorites { --c: var(--green); }
+    [href="#inspiration"], #inspiration { --c: var(--lavender); }
+    [href="#contact"], #contact { --c: var(--peach); }
 
     .hero {
       position: relative;
-      height: calc(var(--vh) - var(--header-h));
+      height: calc(var(--vh) - var(--header-h) - var(--lang-h));
       overflow: hidden;
+      scroll-margin-top: var(--lang-h);
     }
     .hero h1 { margin: 0; }
     .hero img {
+      /* 그림 가로÷세로, 그림 폭÷'그려진 부분'(투명 여백 제외) 폭·높이, 그려진 부분 중심: bamdi-world.png(x 44~2325, y 324~1561px) 기준 */
+      --ratio: 1.4147;
+      --art-w: 1.044;
+      --art-h: 1.925;
+      --art-x: -49.7%;
+      --art-y: -56%;
       --gap-x: clamp(1rem, 3vw, 3rem);
       --gap-y: 1.5rem;
-      --fit: min(100% - 2rem, 1200px, (var(--vh) - var(--header-h) - 3.5rem) * 1.4147);
-      /* 1.044·1.925와 translate 값은 투명 여백을 뺀 '그려진 부분'(원본 기준 x 44~2325, y 324~1561px)에 맞춘 것 */
-      --fill: min((100% - 2 * var(--gap-x)) * 1.044, (var(--vh) - var(--header-h) - 2 * var(--gap-y)) * 1.925);
+      /* 언어 줄(--lang-h)은 일부러 빼지 않음: 그림 크기는 그대로, 위아래 여백만 줄어듦 */
+      --fit: min(100% - 2rem, 1200px, (var(--vh) - var(--header-h) - 3.5rem) * var(--ratio));
+      --fill: min((100% - 2 * var(--gap-x)) * var(--art-w), (var(--vh) - var(--header-h) - 2 * var(--gap-y)) * var(--art-h));
       position: absolute;
       left: 50%;
       top: 50%;
@@ -149,7 +216,17 @@
       /* 그림 전체가 들어가는 크기(--fit)와 그려진 부분이 꽉 차는 크기(--fill)의 딱 중간 */
       width: calc((var(--fit) + var(--fill)) / 2);
       height: auto;
-      transform: translate(-49.7%, -56%);
+      transform: translate(var(--art-x), var(--art-y));
+    }
+    @media (orientation: portrait) and (max-width: 600px) {
+      .hero img {
+        /* bamdi-world-phone.png(x 56~1643, y 144~2209px) 기준. HTML <source>의 media와 조건이 같아야 함 */
+        --ratio: .7069;
+        --art-w: 1.0605;
+        --art-h: .8151;
+        --art-x: -50.5%;
+        --art-y: -49.4%;
+      }
     }
 
     .section {
@@ -185,7 +262,17 @@
       transform: rotate(-1deg);
     }
 
-    .works {
+    .edu {
+      list-style: none;
+      margin: 1.4rem 0 0;
+      padding: 0;
+    }
+    .edu span {
+      display: inline-block;
+      color: var(--ink-soft);
+    }
+
+    .projects {
       list-style: none;
       margin: 2.4rem 0 0;
       padding: 0;
@@ -193,13 +280,13 @@
       grid-template-columns: repeat(3, 1fr);
       gap: 2rem 1.5rem;
     }
-    .works li {
+    .projects li {
       display: flex;
       flex-direction: column;
       align-items: center;
       line-height: 1.6;
     }
-    .works li::before {
+    .projects li::before {
       content: "";
       width: 3.4rem;
       height: 3.4rem;
@@ -209,30 +296,63 @@
       -webkit-mask: var(--pencil-grain);
       mask: var(--pencil-grain);
     }
-    .works li:nth-child(3n+1) { --dot: var(--pink); }
-    .works li:nth-child(3n+2) { --dot: var(--blue); }
-    .works li:nth-child(3n) { --dot: var(--peach); }
-    .works b {
+    .projects li:nth-child(3n+1) { --dot: var(--pink); }
+    .projects li:nth-child(3n+2) { --dot: var(--blue); }
+    .projects li:nth-child(3n) { --dot: var(--peach); }
+    .projects b {
       font-family: var(--hand);
       font-size: 1.2rem;
       font-weight: 400;
     }
-    .works span {
+    .projects span {
       color: var(--ink-soft);
       font-size: .95rem;
     }
 
-    .diary {
+    .list {
       list-style: none;
-      margin: 0;
+      margin: 1.2rem 0 0;
       padding: 0;
     }
-    .diary li + li { margin-top: 1.8rem; }
-    .diary time {
-      display: block;
-      font-family: var(--hand);
-      font-size: 1.2rem;
+    .list li + li { margin-top: .3rem; }
+    .list li::before {
+      content: "";
+      display: inline-block;
+      width: .4em;
+      height: .4em;
+      margin-right: .6em;
+      border-radius: 50%;
+      background: var(--c);
+      vertical-align: .12em;
+    }
+
+    .links a {
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .links a span {
+      background: linear-gradient(var(--c), var(--c)) no-repeat 0 88% / 100% .16em;
+      -webkit-box-decoration-break: clone;
+      box-decoration-break: clone;
+      transition: background-size .25s ease;
+    }
+    .links a::after {
+      content: "↗";
+      content: "↗" / "";
+      display: inline-block;
+      margin-left: .3em;
+      font-size: .8em;
       color: var(--ink-soft);
+      transition: transform .25s ease, color .25s ease;
+    }
+    .links a:hover span,
+    .links a:focus-visible span {
+      background-size: 100% .55em;
+    }
+    .links a:hover::after,
+    .links a:focus-visible::after {
+      color: var(--ink);
+      transform: translate(.15em, -.15em);
     }
 
     .mail {
@@ -247,22 +367,43 @@
     }
 
     @media (max-width: 36rem) {
-      .works { grid-template-columns: 1fr; }
+      .projects { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 359px) {
+      :root {
+        --header-h: 4.6rem;
+        --menu-font: 1rem;
+      }
+      .menu {
+        flex-wrap: wrap;
+        row-gap: .5rem;
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
-      .menu a::before { transition: none; }
+      .menu a::before,
+      .lang-switch button::before,
+      .links a span,
+      .links a::after { transition: none; }
     }
   </style>
 </head>
 <body>
+  <div class="lang-switch" role="group" aria-label="Language">
+    <button type="button" data-set-lang="en">Eng</button>
+    <span aria-hidden="true">/</span>
+    <button type="button" data-set-lang="ko">Kor</button>
+  </div>
+
   <header class="site-header">
     <nav class="menu" aria-label="메뉴">
       <a href="#home">Home</a>
       <a href="#about">About</a>
-      <a href="#works">Works</a>
-      <a href="#diary">Diary</a>
+      <a href="#projects">Projects</a>
+      <a href="#favorites">Favorites</a>
+      <a href="#inspiration">Inspiration</a>
       <a href="#contact">Contact</a>
     </nav>
   </header>
@@ -270,45 +411,96 @@
   <main>
     <section id="home" class="hero">
       <h1>
-        <img src="images/bamdi-world.png" width="2381" height="1683" fetchpriority="high" alt="bamdi world">
+        <picture>
+          <source media="(orientation: portrait) and (max-width: 600px)" srcset="images/bamdi-world-phone.png" width="1683" height="2381">
+          <img src="images/bamdi-world.png" width="2381" height="1683" fetchpriority="high" alt="bamdi world">
+        </picture>
       </h1>
     </section>
 
     <section id="about" class="section">
       <h2 class="title">About</h2>
-      <p>안녕하세요, bamdi예요!</p>
-      <p>색연필로 작고 귀여운 것들을 그리는 걸 좋아해요. 이곳은 제 그림과 하루를 모아두는 작은 세계예요.</p>
-    </section>
-
-    <section id="works" class="section">
-      <h2 class="title">Works</h2>
-      <p>그동안 그린 그림들을 하나씩 모아둘 예정이에요.</p>
-      <ul class="works">
-        <li><b>별 친구들</b><span>고깔모자를 쓴 별 두 개</span></li>
-        <li><b>과일 가게</b><span>볼이 발그레한 귤과 토마토</span></li>
-        <li><b>달콤한 편지</b><span>하트 편지와 케이크 한 조각</span></li>
+      <p>Hi and welcome!</p>
+      <p lang="en">Seoul, Daejeon, Shanghai, Dallas</p>
+      <p lang="ko">서울, 대전, 상해, 달라스</p>
+      <ul class="edu" lang="en">
+        <li>Seoul National University <span>– BA Psychology</span></li>
+        <li>KAIST <span>– MS Culture Technology</span></li>
+      </ul>
+      <ul class="edu" lang="ko">
+        <li>서울대학교 <span>– 심리학 문학사</span></li>
+        <li>한국과학기술원(KAIST) <span>– 문화기술대학원 공학석사</span></li>
       </ul>
     </section>
 
-    <section id="diary" class="section">
-      <h2 class="title">Diary</h2>
-      <ul class="diary">
-        <li>
-          <time datetime="2026-11-13">2026.11.13</time>
-          <p>홈페이지를 처음 열었어요. 앞으로 여기에 작은 일기를 남겨볼게요.</p>
-        </li>
-        <li>
-          <time datetime="2026-11-12">2026.11.12</time>
-          <p>새 색연필을 깎았어요. 오늘은 분홍색이 제일 마음에 들었어요.</p>
-        </li>
+    <section id="projects" class="section">
+      <h2 class="title">Projects</h2>
+      <div lang="en">
+        <p>Projects I've worked on will be gathered here, one by one.</p>
+        <ul class="projects">
+          <li><b>Star Friends</b><span>Two stars in party hats</span></li>
+          <li><b>Fruit Shop</b><span>A rosy-cheeked tangerine and tomato</span></li>
+          <li><b>Sweet Letter</b><span>A heart-sealed letter and a slice of cake</span></li>
+        </ul>
+      </div>
+      <div lang="ko">
+        <p>그동안 해온 프로젝트들을 하나씩 모아둘 예정이에요.</p>
+        <ul class="projects">
+          <li><b>별 친구들</b><span>고깔모자를 쓴 별 두 개</span></li>
+          <li><b>과일 가게</b><span>볼이 발그레한 귤과 토마토</span></li>
+          <li><b>달콤한 편지</b><span>하트 편지와 케이크 한 조각</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="favorites" class="section">
+      <h2 class="title">Favorites</h2>
+      <div lang="en">
+        <p>A few of my favorite things lately.</p>
+        <ul class="list">
+          <li>Sharpening a new set of colored pencils</li>
+          <li>Tangerines on a winter afternoon</li>
+          <li>Long walks with a good playlist</li>
+        </ul>
+      </div>
+      <div lang="ko">
+        <p>요즘 좋아하는 것들이에요.</p>
+        <ul class="list">
+          <li>새 색연필 깎기</li>
+          <li>겨울 오후에 먹는 귤</li>
+          <li>좋아하는 음악 들으며 오래 걷기</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="inspiration" class="section">
+      <h2 class="title">Inspiration</h2>
+      <p lang="en">Inspiring people, works, and concepts.</p>
+      <p lang="ko">영감을 주는 사람, 작업, 그리고 개념들.</p>
+      <ul class="list links">
+        <li><a href="https://giorgialupi.com" target="_blank" rel="noopener"><span>Giorgia Lupi</span></a></li>
+        <li><a href="http://www.dear-data.com/theproject" target="_blank" rel="noopener"><span>Dear Data</span></a></li>
+        <li><a href="https://giorgialupi.com/data-humanism-my-manifesto-for-a-new-data-world" target="_blank" rel="noopener"><span>Data Humanism</span></a></li>
+        <li><a href="https://www.goodreads.com/en/book/show/12609.The_Spirit_Catches_You_and_You_Fall_Down" target="_blank" rel="noopener"><span>The Spirit Catches You and You Fall Down</span></a></li>
       </ul>
     </section>
 
     <section id="contact" class="section">
       <h2 class="title">Contact</h2>
-      <p>하고 싶은 이야기가 있다면 편하게 편지 보내주세요.</p>
+      <p lang="en">If you'd like to say hello, feel free to send me a letter.</p>
+      <p lang="ko">하고 싶은 이야기가 있다면 편하게 편지 보내주세요.</p>
       <p><a class="mail" href="mailto:hello@example.com">hello@example.com</a></p>
     </section>
   </main>
+
+  <script>
+    const langButtons = document.querySelectorAll('[data-set-lang]');
+    const showLang = lang => {
+      document.documentElement.lang = lang;
+      langButtons.forEach(button => button.setAttribute('aria-pressed', button.dataset.setLang === lang));
+    };
+    langButtons.forEach(button => button.addEventListener('click', () => showLang(button.dataset.setLang)));
+    showLang(document.documentElement.lang);
+  </script>
 </body>
 </html>
