@@ -39,7 +39,7 @@
 
     html {
       scroll-behavior: smooth;
-      scroll-padding-top: var(--header-h);
+      scroll-padding-top: calc(var(--header-h) + var(--lang-h));
       -webkit-text-size-adjust: 100%;
       text-size-adjust: 100%;
     }
@@ -64,8 +64,9 @@
     html[lang="ko"] body [lang="en"] { display: none; }
 
     .lang-switch {
+      align-self: stretch;
       height: var(--lang-h);
-      padding-inline: 1.25rem;
+      padding-inline: .25rem;
       display: flex;
       justify-content: flex-end;
       align-items: center;
@@ -115,11 +116,10 @@
       position: sticky;
       top: 0;
       z-index: 10;
-      height: var(--header-h);
       padding-inline: 1rem;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
       background: #fff;
     }
     .site-header::after {
@@ -134,8 +134,11 @@
     }
 
     .menu {
+      height: var(--header-h);
       display: flex;
       justify-content: center;
+      align-items: center;
+      align-content: center;
       gap: clamp(.7em, 6.47vw - 1.14rem, 2.6rem);
       max-width: 100%;
       font-family: var(--hand);
@@ -194,14 +197,13 @@
       position: relative;
       height: calc(var(--vh) - var(--header-h) - var(--lang-h));
       overflow: hidden;
-      scroll-margin-top: var(--lang-h);
     }
     .hero h1 { margin: 0; }
     .hero img {
-      /* 그림 가로÷세로, 그림 폭÷'그려진 부분'(투명 여백 제외) 폭·높이, 그려진 부분 중심: bamdi-world.png(x 44~2325, y 324~1561px) 기준 */
+      /* 그림 가로÷세로, 그림 폭÷'그려진 부분'(빈 여백 제외) 폭·높이, 그려진 부분 중심: bamdi-world2.jpeg(x 44~2325, y 324~1563px) 기준 */
       --ratio: 1.4147;
       --art-w: 1.044;
-      --art-h: 1.925;
+      --art-h: 1.922;
       --art-x: -49.7%;
       --art-y: -56%;
       --gap-x: clamp(1rem, 3vw, 3rem);
@@ -236,7 +238,7 @@
       text-align: center;
     }
     .section:last-child {
-      min-height: calc(var(--vh) - var(--header-h));
+      min-height: calc(var(--vh) - var(--header-h) - var(--lang-h));
     }
     .section p {
       margin: 0 0 .6rem;
@@ -391,13 +393,12 @@
   </style>
 </head>
 <body>
-  <div class="lang-switch" role="group" aria-label="Language">
-    <button type="button" data-set-lang="en">Eng</button>
-    <span aria-hidden="true">/</span>
-    <button type="button" data-set-lang="ko">Kor</button>
-  </div>
-
   <header class="site-header">
+    <div class="lang-switch" role="group" aria-label="Language">
+      <button type="button" data-set-lang="en">Eng</button>
+      <span aria-hidden="true">/</span>
+      <button type="button" data-set-lang="ko">Kor</button>
+    </div>
     <nav class="menu" aria-label="메뉴">
       <a href="#home">Home</a>
       <a href="#about">About</a>
@@ -413,7 +414,7 @@
       <h1>
         <picture>
           <source media="(orientation: portrait) and (max-width: 600px)" srcset="images/bamdi-world-phone.png" width="1683" height="2381">
-          <img src="images/bamdi-world.png" width="2381" height="1683" fetchpriority="high" alt="bamdi world">
+          <img src="images/bamdi-world2.jpeg" width="2381" height="1683" fetchpriority="high" alt="bamdi world">
         </picture>
       </h1>
     </section>
