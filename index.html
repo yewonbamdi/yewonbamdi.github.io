@@ -190,7 +190,7 @@
     [href="#about"], #about { --c: var(--blue); }
     [href="#projects"], #projects { --c: var(--yellow); }
     [href="#favorites"], #favorites { --c: var(--green); }
-    [href="#inspiration"], #inspiration { --c: var(--lavender); }
+    [href="#bubbles"], #bubbles { --c: var(--lavender); }
     [href="#contact"], #contact { --c: var(--peach); }
 
     .hero {
@@ -264,6 +264,16 @@
       transform: rotate(-1deg);
     }
 
+    .about-part p { margin: 0; }
+    .about-part p + p { margin-top: .3rem; }
+    /* 숨은 언어 블록이 간격을 만들지 않도록 아래쪽 여백으로 */
+    .about-part:not(:last-of-type) { margin-bottom: 2rem; }
+    .about-part .soft {
+      color: var(--ink-soft);
+      /* 설명 한 줄로: 글 폭(42rem)보다 넓게 */
+      margin-inline: calc(50% - min(50vw - 1rem, 26rem));
+    }
+
     .edu {
       list-style: none;
       margin: 1.4rem 0 0;
@@ -328,6 +338,115 @@
       vertical-align: .12em;
     }
 
+    .faves {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.6rem 1.2rem;
+      /* 아이콘이 커서 글 폭(42rem)보다 넓게 펼침 */
+      margin: 1.8rem calc(50% - min(50vw - 1rem, 33rem)) 0;
+      padding: 0;
+    }
+    .faves li {
+      flex: 0 0 calc((100% - 3.6rem) / 4);
+      display: flex;
+      align-items: center;
+      gap: .7rem;
+      text-align: left;
+      line-height: 1.3;
+    }
+    /* 둘째 줄(3개)은 더 넓게 벌려서 긴 이름도 두 줄 안에 */
+    .faves li:nth-child(n+5) { flex-basis: calc((100% - 2.4rem) / 3); }
+    .faves .center { text-align: center; }
+    .faves img {
+      flex: none;
+      width: 8rem;
+      height: 8rem;
+      object-fit: contain;
+    }
+    @media (max-width: 66rem) {
+      .faves li,
+      .faves li:nth-child(n+5) { flex-basis: calc((100% - 1.2rem) / 2); }
+    }
+    @media (max-width: 30rem) {
+      .faves img { width: 4.8rem; height: 4.8rem; }
+    }
+
+    /* 줄·간격 없이 흩뿌린 점들: 2·3·5·7 주기를 겹쳐서 위치가 반복돼 보이지 않게 */
+    .inspo {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      max-width: 36rem;
+      margin: 2.4rem auto 0;
+      padding: 1.5rem 0;
+    }
+    .inspo li {
+      flex: 0 0 auto;
+      margin: var(--my, .9rem) var(--mx, 1.1rem);
+      transform: translate(var(--x, 0), var(--y, 0));
+    }
+    .inspo li:nth-child(2n)   { --y: 1.3rem;  --mx: 1.8rem; }
+    .inspo li:nth-child(3n)   { --y: -1.1rem; --x: .6rem;  --s: 2.1rem; --r: 40deg; }
+    .inspo li:nth-child(5n)   { --y: 2rem;    --x: -.8rem; --mx: .6rem; --s: 3rem; }
+    .inspo li:nth-child(7n+3) { --y: -1.8rem; --mx: 2.4rem; --r: -25deg; }
+    .inspo li:nth-child(4n+1) { --my: 1.6rem; }
+    .inspo li:nth-child(11n+6) { --x: 1.4rem; --s: 2.3rem; }
+    .inspo a {
+      position: relative;
+      isolation: isolate;
+      display: inline-block;
+      max-width: 9.5rem;
+      padding: .4rem 0;
+      color: var(--ink);
+      text-decoration: none;
+      line-height: 1.35;
+      text-wrap: balance;
+    }
+    /* 글자 뒤 비눗방울: 옅은 색 + 가장자리 테 + 하이라이트 */
+    .inspo a::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      z-index: -1;
+      width: var(--s, 2.6rem);
+      height: var(--s, 2.6rem);
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 32% 28%, rgb(255 255 255 / .95) 0 9%, rgb(255 255 255 / 0) 22%),
+        radial-gradient(circle at 70% 78%, rgb(255 255 255 / .6) 0 4%, rgb(255 255 255 / 0) 9%),
+        radial-gradient(circle, color-mix(in srgb, var(--dot) 18%, transparent) 45%, color-mix(in srgb, var(--dot) 75%, #ece8e4) 100%);
+      box-shadow:
+        inset 0 0 0 1px color-mix(in srgb, var(--dot) 70%, #b8b0aa),
+        inset -.15rem -.2rem .4rem rgb(255 255 255 / .5);
+      transform: translate(-50%, -50%) rotate(var(--r, 0deg));
+      transition: transform .25s ease;
+    }
+    .inspo a:hover::before,
+    .inspo a:focus-visible::before { transform: translate(-50%, -50%) rotate(var(--r, 0deg)) scale(1.15); }
+    /* 둥실둥실 떠다니기 (속도·시작 시점을 조금씩 다르게) */
+    .inspo a { animation: bob var(--d, 5s) ease-in-out var(--dl, 0s) infinite alternate; }
+    .inspo li:nth-child(2n) { --d: 6.2s; --dl: -1.3s; }
+    .inspo li:nth-child(3n) { --d: 4.6s; --dl: -2.7s; }
+    .inspo li:nth-child(5n) { --d: 7s;   --dl: -.8s; }
+    @keyframes bob {
+      from { transform: translateY(0); }
+      to { transform: translateY(-.35rem); }
+    }
+    .inspo li:nth-child(6n+1) { --dot: var(--pink); }
+    .inspo li:nth-child(6n+2) { --dot: var(--yellow); }
+    .inspo li:nth-child(6n+3) { --dot: var(--blue); }
+    .inspo li:nth-child(6n+4) { --dot: var(--green); }
+    .inspo li:nth-child(6n+5) { --dot: var(--lavender); }
+    .inspo li:nth-child(6n) { --dot: var(--peach); }
+    @media (max-width: 36rem) {
+      .inspo li { margin-inline: calc(var(--mx, 1.1rem) * .5); }
+    }
+
     .links a {
       color: var(--ink);
       text-decoration: none;
@@ -389,6 +508,7 @@
       .lang-switch button::before,
       .links a span,
       .links a::after { transition: none; }
+      .inspo a { animation: none; }
     }
   </style>
 </head>
@@ -404,7 +524,7 @@
       <a href="#about">About</a>
       <a href="#favorites">Favorites</a>
       <a href="#projects">Projects</a>
-      <a href="#inspiration">Inspiration</a>
+      <a href="#bubbles">Bubbles</a>
       <a href="#contact">Contact</a>
     </nav>
   </header>
@@ -421,9 +541,18 @@
 
     <section id="about" class="section">
       <h2 class="title">About</h2>
-      <p>Hi and welcome!</p>
-      <p>Lived in Seoul, Shanghai, Dallas, Daejeon</p>
-      <p>Currently in Seoul</p>
+      <div class="about-part" lang="en">
+        <p>Bamdi = <i>bam</i> (밤, chestnut) + <i>di</i> (from Gandhi)</p>
+        <p class="soft">a nickname from my brother-in-law for my love of chestnuts and shared personality type with Mahatma Gandhi</p>
+      </div>
+      <div class="about-part" lang="ko">
+        <p>밤디: 군밤 밤, 간디 디</p>
+        <p class="soft">밤을 사랑하고 간디와 성격유형이 같아서 형부가 지어준 이름</p>
+      </div>
+      <div class="about-part">
+        <p>Seoul, Shanghai, Dallas, Daejeon</p>
+        <p>Currently in Seoul</p>
+      </div>
       <ul class="edu" lang="en">
         <li>Seoul National University <span>– BA Psychology</span></li>
         <li>KAIST <span>– MS Culture Technology</span></li>
@@ -437,19 +566,25 @@
     <section id="favorites" class="section">
       <h2 class="title">Favorites</h2>
       <div lang="en">
-        <p>A few of my favorite things lately.</p>
-        <ul class="list">
-          <li>Sharpening a new set of colored pencils</li>
-          <li>Tangerines on a winter afternoon</li>
-          <li>Long walks with a good playlist</li>
+        <ul class="faves">
+          <li><img src="images/favorites/chestnut.png" alt="" loading="lazy">roasted chestnuts</li>
+          <li><img src="images/favorites/walks.png" alt="" loading="lazy">walks</li>
+          <li><img src="images/favorites/kiatigers.png" alt="" loading="lazy">KIA tigers</li>
+          <li><img src="images/favorites/stickers.png" alt="" loading="lazy">stickers</li>
+          <li><img src="images/favorites/postcards.png" alt="" loading="lazy">postcards</li>
+          <li><img src="images/favorites/dubai.png" alt="" loading="lazy"><span class="center">dubai chocolate-inspired<br>desserts</span></li>
+          <li><img src="images/favorites/heyoat.png" alt="" loading="lazy">caffe pascucci’s heyoat</li>
         </ul>
       </div>
       <div lang="ko">
-        <p>요즘 좋아하는 것들이에요.</p>
-        <ul class="list">
-          <li>새 색연필 깎기</li>
-          <li>겨울 오후에 먹는 귤</li>
-          <li>좋아하는 음악 들으며 오래 걷기</li>
+        <ul class="faves">
+          <li><img src="images/favorites/chestnut.png" alt="" loading="lazy">군밤</li>
+          <li><img src="images/favorites/walks.png" alt="" loading="lazy">산책</li>
+          <li><img src="images/favorites/kiatigers.png" alt="" loading="lazy">최강기아</li>
+          <li><img src="images/favorites/stickers.png" alt="" loading="lazy">스티커</li>
+          <li><img src="images/favorites/postcards.png" alt="" loading="lazy">엽서</li>
+          <li><img src="images/favorites/dubai.png" alt="" loading="lazy">두바이 초콜릿 디저트</li>
+          <li><img src="images/favorites/heyoat.png" alt="" loading="lazy">파스쿠찌 헤이오트</li>
         </ul>
       </div>
     </section>
@@ -474,11 +609,9 @@
       </div>
     </section>
 
-    <section id="inspiration" class="section">
-      <h2 class="title">Inspiration</h2>
-      <p lang="en">Inspiring people, works, and concepts.</p>
-      <p lang="ko">영감을 주는 사람, 작업, 그리고 개념들.</p>
-      <ul class="list links">
+    <section id="bubbles" class="section">
+      <h2 class="title">Bubbles</h2>
+      <ul class="inspo">
         <li><a href="https://giorgialupi.com" target="_blank" rel="noopener"><span>Giorgia Lupi</span></a></li>
         <li><a href="http://www.dear-data.com/theproject" target="_blank" rel="noopener"><span>Dear Data</span></a></li>
         <li><a href="https://giorgialupi.com/data-humanism-my-manifesto-for-a-new-data-world" target="_blank" rel="noopener"><span>Data Humanism</span></a></li>
@@ -488,9 +621,7 @@
 
     <section id="contact" class="section">
       <h2 class="title">Contact</h2>
-      <p lang="en">If you'd like to say hello, feel free to send me a letter.</p>
-      <p lang="ko">하고 싶은 이야기가 있다면 편하게 편지 보내주세요.</p>
-      <p><a class="mail" href="mailto:hello@example.com">hello@example.com</a></p>
+      <p><a class="mail" href="mailto:yewonbamdi@gmail.com">yewonbamdi@gmail.com</a></p>
     </section>
   </main>
 
